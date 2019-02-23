@@ -1,0 +1,739 @@
+*{
+margin:0;
+padding:0;
+/*background: #000 !important;
+color: #0f0 !important;
+outline: solid #f00 1px !important;*/
+}
+
+@font-face {
+  font-family: 'TGL';
+  src: url('fonts/TGL0-17.eot?#iefix') format('embedded-opentype'),  url('fonts/TGL0-17.woff') format('woff'), url('fonts/TGL0-17.ttf')  format('truetype'), url('fonts/TGL0-17.svg#TGL0-16') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TGL';
+  src: url('fonts/TGL0-16.eot?#iefix') format('embedded-opentype'),  url('fonts/TGL0-16.woff') format('woff'), url('fonts/TGL0-16.ttf')  format('truetype'), url('fonts/TGL0-16.svg#TGL0-16') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
+
+html,body{
+height:100%;
+background-color: pink;
+font-family: 'TGL', sans-serif;
+color: #000;
+font-size: 100%;
+-webkit-text-size-adjust: 100%;
+}
+
+.hide{
+    display:none!important;
+}
+
+
+/* ===
+Stacking order
+=== */
+
+#list-mode{
+z-index: 11;
+}
+
+header, footer, #map-ref-bars{
+z-index: 12;
+}
+
+.point{/* ensure map icons sit above header and footer to avoid clipping*/
+    z-index: 13;
+}
+
+/* ===
+Debug styles
+=== */
+
+#map-area.debug{/* apply debug class to activate resize to accomodate map reference bars */
+    width: calc(100vw - 2.6em);
+    height: calc(100vh -2.6em);
+    top: 1.3em;
+    left: 1.3em;
+    right: 1.3em;
+    bottom: 1.3em; 
+}
+
+#map-ref-bars{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.ref-bar{
+    display: flex;
+    background-color: hotpink;
+    position: absolute;
+    color: #f7f7f7;
+}
+
+#top-bar, #bottom-bar{
+    width: 100vw/* calc(100vw - 1.3em) */;
+    left: 1.3em;
+    height: 1.3em;
+}
+
+#bottom-bar{
+    bottom: 0;
+}
+
+#top-bar span, #bottom-bar span{
+    /* width: 4vw; */
+    flex: 0 1 3vw;
+    /* display: inline-block; */
+    text-align: center;
+}
+#top-bar span:nth-child(odd), #right-bar span:nth-child(even), #bottom-bar span:nth-child(odd), #left-bar span:nth-child(even){
+    background-color: mediumvioletred;
+}
+
+#left-bar, #right-bar{
+    height: 100vh/* calc(100vh - 1.3em) */;
+    top: 1.3em;
+    width: 1.3em;
+    flex-direction: column;
+    text-align: center;
+}
+
+#right-bar{
+    right: 0;
+}
+
+#left-bar span, #right-bar span{
+    flex: 0 1 5vh;
+    padding-top: .5em;
+}
+
+/* ===
+Interface elements
+=== */
+
+h1, h2{
+font-weight: normal;
+}
+
+h1, .listToggle{
+    font-size: 1.4em;
+}
+
+h2{
+    font-size: 1.2em;
+}
+
+.listToggle, select.dropdown, .point a, .marker a{
+cursor: pointer;
+}
+
+a.button, .point a{
+outline: 0;
+}
+
+a.button{
+padding: 5px;
+color: #000;
+text-decoration: none;
+}
+
+.icon01{
+background: url(img/pl-icon-01.svg);
+}
+.icon02{
+background: url(img/pl-icon-02.svg);
+}
+.icon03{
+background: url(img/pl-icon-03.svg);
+}
+.icon04{
+background: url(img/pl-icon-04.svg);
+}
+.icon05{
+background: url(img/pl-icon-05.svg);
+}
+.icon06{
+background: url(img/pl-icon-06.svg);
+}
+.icon07{
+background: url(img/pl-icon-07.svg);
+}
+
+#map-area span{/* map area icon sizing */
+    width: 3vw;
+    height: 5vh;
+}
+
+.point, .marker{
+background-repeat: no-repeat;
+background-position: center;
+}
+
+.point, .sea-tile{
+position: absolute;
+width: 3%;
+height: 5%;
+background-size: 100% 100%;
+}
+
+.sea-tile{
+    background-color: turquoise;
+}
+
+.marker{
+width: 100%;
+height: 100%;
+background-size: 90% 90%;
+}
+ 
+.point a{
+    width: 100%;
+    height: 100%;
+    display: block;
+    text-indent: -9999px;
+}
+
+.marker a{
+    width: 100%;
+    height: 100%;
+    display: block;
+    text-indent: -9999px;
+}
+
+select.dropdown{
+    font-family: 'TGL', sans-serif;
+    font-size: 1.2em;
+    pointer-events: auto;
+    text-align: center;
+    padding: 5px;
+    background-color: #fff;
+    border:0;
+    border-radius: 5px;
+    box-shadow: 2px 2px #000;
+    color: #000;
+}
+
+select.dropdown option{
+    margin-bottom: 5px;
+}
+
+button{/* global button styles */
+    min-width: 80px;
+    cursor: pointer;
+    font-size: 1em;
+    background: #fff;
+    border: 2px solid #000;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: .5em 1em;
+    -webkit-appearance: button; /* for input */
+    -webkit-user-select: none; /* for button */
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+button:active, button.active{/* button onclick and active style */
+    background-color: #000;
+    color: #fff;
+}
+
+/* ===
+Modal box styles
+=== */
+
+.modal{/* style for modal box */
+    z-index: 9999;
+    position: fixed;
+    background-color: #fff;
+    top: 50vh;
+    left: 50vw;
+    overflow-y: scroll;
+    max-width: 600px;
+    max-height: 600px;
+    padding: 1.5em;
+    transform: translateX(-50%) translateY(-50%);
+    box-shadow: 10px 10px #888888;
+}
+
+.modal button{/* modal button style */
+    margin: 1em 0 .5em 50%;/* give space on top and 50% box size margin on left */
+    transform: translateX(-50%);/* move button half its width to the left */
+}
+
+.modal h2{
+    margin-bottom: .5em;
+}
+
+.modal{/* hide modals */
+    display: none;
+}
+
+.modal:target{/* show modals on target */
+    display: initial;
+}
+
+.modal p + p{
+    margin-top: .5em;
+}
+
+/* ===
+Map area styles
+=== */
+
+#map-area{
+position: absolute;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+background-color: pink;
+}
+
+/* ===
+Header and footer styles
+=== */
+
+header, footer{/* header and footer positioning and spacing */
+    position: fixed;/* ensure header and footer stick to window */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    width: 94vw;
+    padding: 0 3vw;
+}
+header{
+    top: 0;
+    height: 9vh;
+    /* background: linear-gradient(pink 75%, rgba(0, 0, 0, 0)); */
+}
+footer{
+    bottom: 0;
+    height: 7vh;
+    /* background: linear-gradient(rgba(0, 0, 0, 0), pink 75%); */
+}
+
+header > *:nth-child(2), footer > *:nth-child(2){/* align second item in center */
+    text-align: center;
+}
+
+header > *:last-child, footer > *:last-child{/* align last (3rd) item to right */
+    text-align: right;
+}
+
+header > *:first-child, footer > *:first-child,
+header > *:last-child, footer > *:last-child{
+    width: 200px;/* ensures even spacing */  
+}
+
+header > *, footer > *{
+    background-color: pink; 
+}
+
+/*===
+List Mode styles
+===*/
+
+#list-mode{
+    display:none;/* hides list mode by default */
+}
+
+.list-spacer{/* spacer for start and end of list */
+    height: 9vh;
+    min-height: 90px;
+    display: block;
+}
+
+#list-mode-items > div{/* list item */
+    /* width: 94vw; */
+    min-height: 100px;
+    padding: .8em 3vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #e1e1e1;/* border underneath each item */
+}
+
+#list-mode-items > div:nth-of-type(1){
+   border-top: 2px solid #e1e1e1;/* cap first list item with border on top */
+}
+
+#list-mode-items > div:hover{/* hover style for list item */
+    font-size: 1.1em;
+    background-color: #fff;
+}
+
+#list-mode-items  > div a{/* list item link style */
+color: #000;
+text-decoration: none;
+}
+#list-mode-items  > div:hover a{/* list item link style on hover */
+text-decoration: underline;
+}
+
+#list-mode-items div span:nth-of-type(1){/* Provider icon*/
+width: 5%;
+height: 100px;/* give icon height so it is visible */
+}
+
+#list-mode-items div:hover span:nth-of-type(1){/* Provider icon on hover*/
+width: 6%;
+}
+
+#list-mode-items div span:nth-of-type(2){/* Provider name */
+width: 20%;
+font-size: 1.2em;
+}
+
+#list-mode-items div span:nth-of-type(3){/* Provider address and notes */
+width: 20%;
+}
+
+#list-mode-items div span:nth-of-type(4){/* Provider phone */
+width: 15%;
+}
+
+#list-mode-items div span:nth-of-type(5){/* Provider tags */
+width: 32%;
+}
+ 
+
+/* ===
+Tooltipster styles
+=== */
+
+.tooltipster-default,
+.tooltipster-01,
+.tooltipster-02,
+.tooltipster-03,
+.tooltipster-04,
+.tooltipster-05,
+.tooltipster-06,
+.tooltipster-07{
+    border-radius: 5px;
+    color: #000;
+    box-shadow: 2px 2px #000;
+}
+
+.tooltipster-default span,
+.tooltipster-01 span,
+.tooltipster-02 span,
+.tooltipster-03 span,
+.tooltipster-04 span,
+.tooltipster-05 span,
+.tooltipster-06 span,
+.tooltipster-07 span{
+float: left;
+display: block;
+clear: left;
+margin-bottom: 7px;
+max-width: 245px;
+}
+
+.tooltipster-content span:first-of-type{
+font-size: 1.2em;
+margin-right: 30px;
+max-width: 200px;
+}
+
+.tooltipster-content span:last-of-type{
+position: absolute;
+font-size: 1.5em;
+top: 14px;
+right: 13px;
+}
+
+.tooltipster-content a{/* link styles for tooltip text*/
+color: #000;
+display: block;
+margin-bottom: .4em;
+max-width: 250px;
+}
+.tooltipster-content a:first-child{
+font-size: 1.2em;
+}
+
+.tooltipster-01{
+background: #ff00cc;
+border: 2px solid #ff00cc;
+}
+.tooltipster-02{
+background: #00ffff;
+border: 2px solid #00ffff;
+}
+.tooltipster-03{
+background: #ffff00;
+border: 2px solid #ffff00;
+}
+.tooltipster-04{
+background: #ff9900;
+border: 2px solid #ff9900;
+}
+.tooltipster-05{
+background: #ff0000;
+border: 2px solid #ff0000;
+}
+.tooltipster-06{
+background: #66ff00;
+border: 2px solid #66ff00;
+}
+.tooltipster-07{
+background: #9900cc;
+border: 2px solid #9900cc;
+}
+
+/* Use this next selector to style things like font-size and line-height: */
+
+.tooltipster-default .tooltipster-content,
+.tooltipster-01 .tooltipster-content,
+.tooltipster-02 .tooltipster-content,
+.tooltipster-03 .tooltipster-content,
+.tooltipster-04 .tooltipster-content,
+.tooltipster-05 .tooltipster-content,
+.tooltipster-06 .tooltipster-content,
+.tooltipster-07 .tooltipster-content{
+    font-family: 'TGL', sans-serif;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 15px 15px;
+    overflow: hidden;
+}
+
+
+/* This is the base styling required to make all Tooltipsters work */
+
+.tooltipster-base {
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9999999;
+    pointer-events: none;
+    width: auto;
+    overflow: visible;
+}
+.tooltipster-base .tooltipster-content {
+    overflow: hidden;
+}
+
+/* These next classes handle the styles for the little arrow attached to the tooltip. By default, the arrow will inherit the same colors and border as what is set on the main tooltip itself. */
+
+.tooltipster-arrow {
+    display: block;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+.tooltipster-arrow span, .tooltipster-arrow-border {
+    display: block;
+    width: 0; 
+    height: 0;
+    position: absolute;
+}
+.tooltipster-arrow-top span, .tooltipster-arrow-top-right span, .tooltipster-arrow-top-left span {
+    border-left: 8px solid transparent !important;
+    border-right: 8px solid transparent !important;
+    border-top: 8px solid;
+    bottom: -7px;
+}
+.tooltipster-arrow-top .tooltipster-arrow-border, .tooltipster-arrow-top-right .tooltipster-arrow-border, .tooltipster-arrow-top-left .tooltipster-arrow-border {
+    border-left: 9px solid transparent !important;
+    border-right: 9px solid transparent !important;
+    border-top: 9px solid;
+    bottom: -7px;
+}
+
+.tooltipster-arrow-bottom span, .tooltipster-arrow-bottom-right span, .tooltipster-arrow-bottom-left span {
+    border-left: 8px solid transparent !important;
+    border-right: 8px solid transparent !important;
+    border-bottom: 8px solid;
+    top: -7px;
+}
+.tooltipster-arrow-bottom .tooltipster-arrow-border, .tooltipster-arrow-bottom-right .tooltipster-arrow-border, .tooltipster-arrow-bottom-left .tooltipster-arrow-border {
+    border-left: 9px solid transparent !important;
+    border-right: 9px solid transparent !important;
+    border-bottom: 9px solid;
+    top: -7px;
+}
+.tooltipster-arrow-top span, .tooltipster-arrow-top .tooltipster-arrow-border, .tooltipster-arrow-bottom span, .tooltipster-arrow-bottom .tooltipster-arrow-border {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+.tooltipster-arrow-top-left span, .tooltipster-arrow-bottom-left span {
+    left: 6px;
+}
+.tooltipster-arrow-top-left .tooltipster-arrow-border, .tooltipster-arrow-bottom-left .tooltipster-arrow-border {
+    left: 5px;
+}
+.tooltipster-arrow-top-right span,  .tooltipster-arrow-bottom-right span {
+    right: 6px;
+}
+.tooltipster-arrow-top-right .tooltipster-arrow-border, .tooltipster-arrow-bottom-right .tooltipster-arrow-border {
+    right: 5px;
+}
+.tooltipster-arrow-left span, .tooltipster-arrow-left .tooltipster-arrow-border {
+    border-top: 8px solid transparent !important;
+    border-bottom: 8px solid transparent !important; 
+    border-left: 8px solid;
+    top: 50%;
+    margin-top: -7px;
+    right: -7px;
+}
+.tooltipster-arrow-left .tooltipster-arrow-border {
+    border-top: 9px solid transparent !important;
+    border-bottom: 9px solid transparent !important; 
+    border-left: 9px solid;
+    margin-top: -8px;
+}
+.tooltipster-arrow-right span, .tooltipster-arrow-right .tooltipster-arrow-border {
+    border-top: 8px solid transparent !important;
+    border-bottom: 8px solid transparent !important; 
+    border-right: 8px solid;
+    top: 50%;
+    margin-top: -7px;
+    left: -7px;
+}
+.tooltipster-arrow-right .tooltipster-arrow-border {
+    border-top: 9px solid transparent !important;
+    border-bottom: 9px solid transparent !important; 
+    border-right: 9px solid;
+    margin-top: -8px;
+}
+
+/* Some CSS magic for the awesome animations - feel free to make your own custom animations and reference it in your Tooltipster settings! */
+
+.tooltipster-grow {
+    -webkit-transform: scale(0,0);
+    -moz-transform: scale(0,0);
+    -o-transform: scale(0,0);
+    -ms-transform: scale(0,0);
+    transform: scale(0,0);
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    -o-transition-property: -o-transform;
+    -ms-transition-property: -ms-transform;
+    transition-property: transform;
+    -webkit-backface-visibility: hidden;
+}
+.tooltipster-grow-show {
+    -webkit-transform: scale(1,1);
+    -moz-transform: scale(1,1);
+    -o-transform: scale(1,1);
+    -ms-transform: scale(1,1);
+    transform: scale(1,1);
+    -webkit-transition-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+    -webkit-transition-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1.15); 
+    -moz-transition-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1.15); 
+    -ms-transition-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1.15); 
+    -o-transition-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1.15); 
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1.15);
+}
+
+/* ===
+Media queries for responsive layout
+=== */
+
+@media screen and (min-width:1500px){/* bump up sizing on larger displays */
+    html,body{
+        font-size: 110%;
+    }
+
+    .tooltipster-default .tooltipster-content,
+    .tooltipster-01 .tooltipster-content,
+    .tooltipster-02 .tooltipster-content,
+    .tooltipster-03 .tooltipster-content,
+    .tooltipster-04 .tooltipster-content,
+    .tooltipster-05 .tooltipster-content,
+    .tooltipster-06 .tooltipster-content,
+    .tooltipster-07 .tooltipster-content{
+        font-size: 20px;
+        line-height: 23px;
+        padding: 20px 20px;
+    }
+}
+
+@media screen and (max-width:1000px)/*  and (orientation:portrait) */{
+
+    #list-mode{
+    display: block !important;/* shows the list by default */
+    position: relative;/* reset list from position absolute */
+    }
+
+    .listToggle, #map-area{/* hide map and list/map toggle */
+    display:none !important;
+    }
+
+    header{
+        flex-wrap: wrap;/* collapse items */
+        margin-top: .8em;/* space above header */
+    }
+    header > *{
+        width: initial;/* reset widths of header children so they sit nicely */
+    }
+    footer{
+        margin-bottom: .8em;/* space under footer */
+    }
+
+    #list-mode-button-bar{
+        display: initial!important;/* override hide class */
+    }
+
+    #list-mode-items > div{
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+    }
+
+    #list-mode-items > div a{
+        text-decoration: underline;
+    }
+
+    #list-mode-items div span:nth-of-type(1), #list-mode-items div:hover span:nth-of-type(1){/* Provider icon*/
+        width: 15vw;/* make icon larger */
+        max-width: 70px;
+        height: 100%;
+        position: absolute;/* keep icon to the side */
+        pointer-events: none;/* make icon unclickable to avoid opening map icon tooltip */
+    }
+
+    #list-mode-items div span:nth-of-type(2),
+    #list-mode-items div span:nth-of-type(3),
+    #list-mode-items div span:nth-of-type(4),
+    #list-mode-items div span:nth-of-type(5){
+        width: initial;
+        margin-left: 17vw;/* allow space for icon */
+        margin-top: .25em;
+        margin-bottom: .25em;
+        max-width: 400px;
+    }
+
+   #list-mode-items > div:hover{/* hover style for list item */
+        font-size: 1em;/* reset to 1em as hover will not work on touch displays */
+    }
+
+}
+
+@media only screen and (max-width:600px){
+    .modal{/* reset sizing of modal to full width and height of screen when screen is too small */
+        max-width: initial;
+        max-height: initial;
+        width: 90vw;
+        height: 90vh;
+        padding: 5vh 5vw;
+    }
+}

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Printer Linker - Melbourne</title>
+<meta name="description" content="Printer Linker directory for Melbourne."/>
+<link rel="icon" type="image/png" href="favicon.png" />
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.tooltipster.min.js"></script>
+<script type="text/javascript" src="pl-data.json"></script>
+<script type="text/javascript">
+
+//Sort JSON, from http://stackoverflow.com/a/9188211
+function sortResults(prop, asc, jsonVar) {
+    jsonVar = jsonVar.sort(function(a, b) {
+        if (asc) {
+            return (a[prop] > b[prop]) ? 1 : ((a[prop] < b[prop]) ? -1 : 0);
+        } else {
+            return (b[prop] > a[prop]) ? 1 : ((b[prop] < a[prop]) ? -1 : 0);
+        }
+    });
+}
+
+var iconType = {//pair plCategory with number
+  'printer':'01',
+  'printerBinder':'02',
+  'materials':'03',
+  'binder':'04',
+  'laserCutting':'05',
+  'signage':'06',
+  'photo':'07'
+}
+
+function writeMap(){
+    var mapArea = document.getElementById("map-area");//get map area div
+
+    for(i = 0; i < plDataJSON.length; i++){//JSON dataset for loop
+        
+        if (plDataJSON[i].plX !== 0 && plDataJSON[i].plY !== 0 && plDataJSON[i].plClosed !== true) {//if plX and plY is not equal to zero and business is not closed permanently
+            //console.log(plDataJSON[i].plName)
+            var mapItem = document.createElement("span");//make span for map item
+            mapItem.style.left = 3 * plDataJSON[i].plX +"vw";//apply x coordinate
+            mapItem.style.top = 5 * plDataJSON[i].plY +"vh";//apply y coordinate
+
+            mapItem.setAttribute("data-category", iconType[plDataJSON[i].plCategory])//add category ID to data-category attribute
+
+            mapItem.className = "point icon" + iconType[plDataJSON[i].plCategory];//add appropriate style classes
+            
+            var mapItemLink = document.createElement("a");//make link element for span
+
+            mapItemLink.className = "tooltip" + iconType[plDataJSON[i].plCategory];//add appropriate tooltip style
+
+            mapItemLink.id = "map-" + plDataJSON[i].plID;//add ID
+
+            if(plDataJSON[i].plHyperlink !== null){//if hyperlink, make title a link
+                var providerNamePrint = "<a href='" + plDataJSON[i].plHyperlink + "' target='_blank'>" + plDataJSON[i].plName + "</a>";
+            }else{
+                var providerNamePrint = "<a>" + plDataJSON[i].plName + "</a>";
+            }
+
+            if(plDataJSON[i].plComments !== null){//if comment
+                var printComment = "<a><strong>" + plDataJSON[i].plComments + "</strong></a>";
+            }else{
+                var printComment = "";
+            }
+
+            if(plDataJSON[i].plPhone === null){
+                plDataJSON[i].plPhone = "No phone number."
+            }
+
+            var addressSearch = "https://maps.google.com/?q=" + plDataJSON[i].plStreet + "+" + plDataJSON[i].plCity + "+" + plDataJSON[i].plRegion + "+" + plDataJSON[i].plPostcode;
+
+            var addressPrint = plDataJSON[i].plStreet + "<br />" + plDataJSON[i].plCity + " " + plDataJSON[i].plRegion + " " + plDataJSON[i].plPostcode
+
+            mapItemLink.title = providerNamePrint + "<a href='" + addressSearch + "' target='_blank'>" + addressPrint + "</a><a>" + plDataJSON[i].plPhone + "</a>" + printComment + "<a>" + plDataJSON[i].plTags + "</a>";
+
+            mapItem.appendChild(mapItemLink);//append link to map icon
+
+            mapArea.appendChild(mapItem);//append mapItem to mapArea
+
+        }
+
+    }
+
+    //tooltipster JS
+
+    $('.tooltip01').tooltipster({
+        theme: 'tooltipster-01',
+        contentAsHTML: 'true',
+        interactive: 'true',
+        animation: 'grow',
+        trigger: 'click'
+    });
+    $('.tooltip02').tooltipster({
+        theme: 'tooltipster-02',
+        contentAsHTML: 'true',
+        interactive: 'true',
+        animation: 'grow',
+        trigger: 'click'
+    });
+    $('.tooltip03').tooltipster({
+        theme: 'tooltipster-03',
+        contentAsHTML: 'true',
+        interactive: 'true',
+        animation: 'grow',
+        trigger: 'click'
+    });
+    $('.tooltip04').tooltipster({
+        theme: 'tooltipster-04',
+        contentAsHTML: 'true',
+        interactive: 'true',
+        animation: 'grow',
+        trigger: 'click'
+    });
+    $('.tooltip05').tooltipster({
+        theme: 'tooltipster-05',
+        contentAsHTML: 'true',
+        interactive: 'true',
+        animation: 'grow',
+        trigger: 'click'
+    });
+    $('.tooltip06').tooltipster({
+        theme: 'tooltipster-06',
+        contentAsHTML: 'true',
+        interactive: 'true',
+        animation: 'grow',
+        trigger: 'click'
+    });
+    $('.tooltip07').tooltipster({
+        theme: 'tooltipster-07',
+        contentAsHTML: 'true',
+        interactive: 'true',
+        animation: 'grow',
+        trigger: 'click'
+    });
+}
+
+function writeList(sortByHeader, ascending){//function for writing data to list
+
+    sortResults(sortByHeader, ascending, plDataJSON);//sort JSON A-Z
+
+    //get list sort buttons
+    var sortNewButton = document.getElementById('sort-new');
+    var sortAZButton = document.getElementById('sort-a');
+    var sortZAButton = document.getElementById('sort-z');
+
+    //remove all active classes applied
+    sortNewButton.classList.remove('active');
+    sortAZButton.classList.remove('active');
+    sortZAButton.classList.remove('active');
+
+    if (sortByHeader === 'plID' && ascending === false) {//show newest button.
+        sortNewButton.classList.add('active');
+    }else if (sortByHeader === 'plName' && ascending === true) {//show a-z button.
+        sortAZButton.classList.add('active');
+    }else if (sortByHeader === 'plName' && ascending === false) {//show z-a button.
+        sortZAButton.classList.add('active');
+    }
+
+    var dataListElement = document.getElementById("list-mode-items");//get list div
+    dataListElement.innerHTML = "";//clean out list
+
+    for(i = 0; i < plDataJSON.length; i++){//JSON dataset for loop
+
+        if (plDataJSON[i].plClosed !== true) {//if business if not permanently closed
+            var listComment = "";
+
+            var listAddress = "";
+
+            var listTitle = plDataJSON[i].plName;//default to name only for title
+
+            if(plDataJSON[i].plHyperlink !== null){//if hyperlink, make title a link
+                var listTitle = "<a href='" + plDataJSON[i].plHyperlink + "' target='_blank' title='Go to " + plDataJSON[i].plHyperlink + "'>" + plDataJSON[i].plName + "</a>";
+            }
+
+            if(plDataJSON[i].plComments !== null){//if comment
+                var listComment = "<strong>" + plDataJSON[i].plComments + "</strong>";
+            }
+
+            if(plDataJSON[i].plStreet !== null){//if address street
+                var listAddress = "<a href='http://maps.google.com/?q=" + plDataJSON[i].plStreet + "+" + plDataJSON[i].plCity + "+" + plDataJSON[i].plRegion + "+" + plDataJSON[i].plPostcode + "' target='_blank'>" + plDataJSON[i].plStreet + "<br />" + plDataJSON[i].plCity + " " + plDataJSON[i].plRegion + " " + plDataJSON[i].plPostcode + "</a><br />";//make linked address
+            }
+
+            if(plDataJSON[i].plPhone === null){
+                plDataJSON[i].plPhone = "No phone number"
+            }
+
+            if (plDataJSON[i].plX !== 0 && plDataJSON[i].plY !== 0) {//if plX and plY is not equal to zero 
+                dataListElement.innerHTML += "<div data-category='" + iconType[plDataJSON[i].plCategory] + "'><span class='marker icon" + iconType[plDataJSON[i].plCategory] + "' onclick='triggerMapIcon("+ plDataJSON[i].plID +")' title='Show on map.' style='cursor:pointer'></span><span>" + listTitle + "</span><span>" + listAddress + listComment + "</span><span>" + plDataJSON[i].plPhone + "</span><span>" + plDataJSON[i].plTags + "</span></div>";
+            }else{//do not add onclick event for icon
+                dataListElement.innerHTML += "<div data-category='" + iconType[plDataJSON[i].plCategory] + "'><span class='marker icon" + iconType[plDataJSON[i].plCategory] + "'></span><span>" + listTitle + "</span><span>" + listAddress + listComment + "</span><span>" + plDataJSON[i].plPhone + "</span><span>" + plDataJSON[i].plTags + "</span></div>";
+            } 
+        }    
+    }
+
+    dataListElement.innerHTML += "<span class='list-spacer'></span>";//spacer at end
+
+    if(filterCategoryID !== 0){//if filterCategoryID is not default 0
+       filterItems()//apply filter as filter is reset when items are re-written 
+    }
+    
+
+}
+
+window.onload = function(){
+
+    writeMap();//write map to page from JSON dataset
+    writeList('plName', true);//write the list elements A-Z from JSON dataset
+
+}
+
+function quitModal(){//to quit modals the URL target needs to be removed
+	window.location.replace("#");
+}
+
+var filterCategoryID = 0;//variable to store filter category ID, as filters can be lost when re-writing lists for sorting and need to be re-applied
+
+function filterItems(item){
+
+    if (item !== undefined) {//if there is an item update the category ID variable
+        filterCategoryID = item.value;//get value from selected item
+    }
+    
+    var listItems = document.querySelectorAll("div[data-category]");//get list items with data-category attribute
+    var mapItems = document.querySelectorAll("span[data-category]");//get map items with data-filter attribute
+
+    for (var i = 0; i < listItems.length; i++) {//go through list items with attribute
+        if(listItems[i].getAttribute("data-category") === filterCategoryID || filterCategoryID === ""){//if category ID passed to function matches category ID remove hide class, else add
+            listItems[i].classList.remove("hide")
+        }else{
+            listItems[i].classList.add("hide")
+        }
+
+    }
+    for (var i = 0; i < mapItems.length; i++) {//go through map items with attribute
+        if(mapItems[i].getAttribute("data-category") === filterCategoryID || filterCategoryID === ""){//if category ID passed to function matches category ID remove hide class, else add
+            mapItems[i].classList.remove("hide")
+        }else{
+            mapItems[i].classList.add("hide")
+        }
+
+    }
+}
+
+function triggerMapIcon(id){//feed id to this function to close list and click on map icon for tooltip
+    $( ".listToggle" ).trigger( "click" );//toggle list
+    $( "#map-"+id ).trigger( "click" );//toggle map item tooltip
+}
+
+function toggleDebug(){//function to toggle debug mode
+    var mapArea = document.getElementById("map-area");//get map area div
+
+    if (mapArea.classList.contains('debug')){//if map area has debug class on
+        mapArea.classList.remove('debug');//remove debug class
+    }else{//if no debug class
+        mapArea.classList.add('debug');//add debug class
+    }
+
+    var mapRefBars = document.getElementById('map-ref-bars');//get map ref bars container
+    if(mapRefBars.style.display === 'none'){//if map ref bars are hidden
+        mapRefBars.style.display = 'initial';//show map ref bars
+    }else{
+         mapRefBars.style.display = 'none';//hide map ref bars
+    }
+    
+}
+
+$(document).ready(function() {
+
+    $('.listToggle').click(function () {
+        var $target = $($(this).data('target')).stop(true).slideToggle();
+        var newText = $(this).text() == "\u2637 Map" ? "\u2630 List" : "\u2637 Map";
+        $("#map-area").toggleClass("hide");/* hide map */
+        $("#subtitle").toggleClass("hide");/* hide h2 */
+        $("#list-mode-button-bar").toggleClass("hide");/* show button bar which has hide class applied */
+        $(this).text(newText);//replace list map toggle text with newText
+    });
+
+});
+</script>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+    
+<body>
+
+    <header>
+
+        <h1>Printer Linker</h1>
+
+        <h2 id="subtitle">Melbourne</h2>
+
+        <div id="list-mode-button-bar" class="hide">
+            <button onclick="writeList('plName', true)" id="sort-a">A-Z</button>
+            <button onclick="writeList('plName', false)" id="sort-z">Z-A</button>
+            <button onclick="writeList('plID', false)" id="sort-new">Latest</button>
+        </div>
+
+        <span class="listToggle" data-target="#list-mode">&#9776; List</span>
+        
+    </header>
+
+    <footer>
+        <span>With ♥︎ <a href="https://do.meni.co" style="color:black">do.meni.co</a></span>
+        
+
+        <span>
+            <select class ="dropdown" autocomplete="off" onchange="filterItems(this)"><!-- autocomplete="off" makes sure Firefox resets select menu on page refresh //-->
+                <option value="">All</option>
+                <option value="01">Printers</option>
+                <option value="02">Printer Binders</option>
+                <option value="03">Materials</option>
+                <option value="04">Binders</option>
+                <option value="05">Laser Cutters</option>
+                <option value="06">Signage</option>
+                <option value="07">Photo Labs</option>
+            </select>
+        </span>
+
+        <span>
+            <a href="#about" class="button">About</a>
+            <a href="#terms" class="button">Terms</a>
+        </span>
+
+    </footer>
+
+    <!-- Modal boxes //-->
+
+	<section id="about" class="modal">
+
+		<h2>About</h2>
+
+        <p><i>Printer Linker</i> is an online directory of service providers useful to artists, designers and students in Melbourne, Victoria, Australia.</p>
+
+        <p><strong>History</strong>: the <a href="https://printer.lc/v1/" target="_blank">first version of Printer Linker</a> was made in 2013 as a side-project during an undergraduate degree to help other students find specialist businesses recommended by lecturers. It was redeveloped as part of an <a href="https://do.meni.co/archive/honours/print-digital/" target="_blank">honours degree project</a> in 2014 and revived and open-sourced in 2019.</p>
+
+        <p><strong>Contact</strong>: you can email <a href="mailto:to@printer.lc">to@printer.lc</a> to make an enquiry or suggestion. Please note that Printer Linker is a side-project run by one person where listings are manually populated in free-time. Do not expect quick replies or up-to-date listings. The site is provided and run in good faith.</p>
+
+        <p><strong>To students</strong>: Printer Linker began as a side project by a student. If you have an interest in contributing or making your own directory please checkout the [Printer Linker GitHub page].</p>
+
+        <p>Dom.</p>
+
+		<button onclick="quitModal()">Ok</button>
+
+	</section>
+
+	<section id="terms" class="modal">
+
+		<h2>Terms</h2>
+
+		<p>By using Printer Linker you agree to these terms, last modified September 27, 2014.</p>
+
+		<p>Printer Linker is provided as is. Printer Linker makes no guarantees about the accuracy of its content. Information provided may contain errors including, but not limited to: incorrect location or contact details of goods and/or service providers listed, or incorrect service details (such as services offered). Printer Linker makes no claims or promises about the conduct of goods and/or service providers listed or listing contributors. Accordingly Printer Linker, and its founder and website administrator Domenico Mazza shall not be held liable for any damages as a direct or indirect consequence of using Printer Linker.</p>
+
+		<p>These terms may be modified, and without notification to you. You should be aware of the terms and check the terms regularly.</p>		
+
+		<button onclick="quitModal()">Ok</button>
+
+	</section>
+
+    <div id="debug" class="modal">
+
+        <p><input type="checkbox" onclick="toggleDebug()"> Debug mode</p> 
+
+        <button onclick="quitModal()">Quit</button>
+
+    </div>
+
+    <!-- List mode //-->
+
+	<div id="list-mode">
+
+		<span class='list-spacer'></span>
+
+		<div id="list-mode-items">
+			<!-- List items added here by JS //-->
+		</div>
+		
+	</div>
+
+    <!-- Map mode //-->
+
+	<div id="map-area">
+        <!-- Sea tiles for bay //-->
+        <div class="sea-tile" style="bottom: 30vh;left:30vw;width:9vw;height:5vh"></div>
+        <div class="sea-tile" style="bottom: 20vh;left:9vw;width:9vw;height:5vh"></div>
+        <!-- Geelong //--><div class="sea-tile" style="bottom: 15vh;left:6vw;width:12vw;height:5vh"></div>
+        <!-- Bellarine Peninsula //-->
+        <div class="sea-tile" style="bottom: 0;left:12vw;width:18vw;height:5vh"></div>
+        <div class="sea-tile" style="bottom: 5vh;left:18vw;width:24vw;height:25vh"></div>
+        <div class="sea-tile" style="bottom: 20vh;left:42vw;width:3vw;height:5vh"></div>
+        <div class="sea-tile" style="bottom: 10vh;left:42vw;width:9vw;height:10vh"></div>
+        <!-- Mornington Peninsula in between //-->
+        <div class="sea-tile" style="bottom: 5vh;left:63vw;width:6vw;height:5vh"></div>
+        <div class="sea-tile" style="bottom: 5vh;left:81vw;width:3vw;height:5vh"></div>
+        <div class="sea-tile" style="bottom: 10vh;left:66vw;width:15vw;height:5vh"></div>
+        <!-- French Island in between //-->
+        <div class="sea-tile" style="bottom: 0;left:57vw;width:27vw;height:5vh"></div>
+        <!-- Map items go here //-->
+    </div>
+
+    <!-- Debug view //-->
+
+    <div id="map-ref-bars" style="display: none;">
+        <div id="top-bar" class="ref-bar">
+            <span>0</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span>7</span>
+            <span>8</span>
+            <span>9</span>
+            <span>10</span>
+            <span>11</span>
+            <span>12</span>
+            <span>13</span>
+            <span>14</span>
+            <span>15</span>
+            <span>16</span>
+            <span>17</span>
+            <span>18</span>
+            <span>19</span>
+            <span>20</span>
+            <span>21</span>
+            <span>22</span>
+            <span>23</span>
+            <span>24</span>
+            <span>25</span>
+            <span>26</span>
+            <span>27</span>
+            <span>28</span>
+            <span>29</span>
+            <span>30</span>
+            <span>31</span>
+            <span></span>
+        </div>
+        <div id="right-bar" class="ref-bar">
+            <span>0</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span>7</span>
+            <span>8</span>
+            <span>9</span>
+            <span>10</span>
+            <span>11</span>
+            <span>12</span>
+            <span>13</span>
+            <span>14</span>
+            <span>15</span>
+            <span>16</span>
+            <span>17</span>
+            <span>18</span>
+            <span></span>
+        </div>
+        <div id="bottom-bar" class="ref-bar">
+            <span>0</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span>7</span>
+            <span>8</span>
+            <span>9</span>
+            <span>10</span>
+            <span>11</span>
+            <span>12</span>
+            <span>13</span>
+            <span>14</span>
+            <span>15</span>
+            <span>16</span>
+            <span>17</span>
+            <span>18</span>
+            <span>19</span>
+            <span>20</span>
+            <span>21</span>
+            <span>22</span>
+            <span>23</span>
+            <span>24</span>
+            <span>25</span>
+            <span>26</span>
+            <span>27</span>
+            <span>28</span>
+            <span>29</span>
+            <span>30</span>
+            <span>31</span>
+            <span></span>
+        </div>
+        <div id="left-bar" class="ref-bar">
+            <span>0</span>
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+            <span>7</span>
+            <span>8</span>
+            <span>9</span>
+            <span>10</span>
+            <span>11</span>
+            <span>12</span>
+            <span>13</span>
+            <span>14</span>
+            <span>15</span>
+            <span>16</span>
+            <span>17</span>
+            <span>18</span>
+            <span></span>
+        </div>
+    </div>
+
+</body>
+    
+</html>
