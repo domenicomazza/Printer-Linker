@@ -684,6 +684,10 @@ Media queries for responsive layout
         margin-bottom: .8em;/* space under footer */
     }
 
+    header > *:first-child{
+        width: 140px;/* allows space to be balanced on landscape mobile a bit more nicely */
+    }
+
     #list-mode-button-bar{
         display: initial!important;/* override hide class */
     }
