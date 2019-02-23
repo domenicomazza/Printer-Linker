@@ -6,10 +6,10 @@ Information about Printer Linker can be found at [https://printer.lc/#about](htt
 
 ## Versions
 
-- 3.1 [https://printer.lc/](https://printer.lc/) (2019–onwards)
-- 3 [https://printer.lc/v3/?/melbourne/](https://printer.lc/v3/?/melbourne/) (2014–2019)
-- 2 [https://printer.lc/v2](https://printer.lc/v2) (2013)
-- 1 [https://printer.lc/v1](https://printer.lc/v1) (2013)
+- [v3.1](https://printer.lc/) (2019–onwards)
+- [v3](https://printer.lc/v3/?/melbourne/) (2014–2019)
+- [v2](https://printer.lc/v2) (2013)
+- [v1](https://printer.lc/v1) (2013)
 
 ## License
 
