@@ -1,9 +1,6 @@
 *{
 margin:0;
 padding:0;
-/*background: #000 !important;
-color: #0f0 !important;
-outline: solid #f00 1px !important;*/
 }
 
 @font-face {
@@ -78,7 +75,7 @@ Debug styles
 }
 
 #top-bar, #bottom-bar{
-    width: 100vw/* calc(100vw - 1.3em) */;
+    width: 100vw;
     left: 1.3em;
     height: 1.3em;
 }
@@ -88,9 +85,7 @@ Debug styles
 }
 
 #top-bar span, #bottom-bar span{
-    /* width: 4vw; */
     flex: 0 1 3vw;
-    /* display: inline-block; */
     text-align: center;
 }
 #top-bar span:nth-child(odd), #right-bar span:nth-child(even), #bottom-bar span:nth-child(odd), #left-bar span:nth-child(even){
@@ -98,7 +93,7 @@ Debug styles
 }
 
 #left-bar, #right-bar{
-    height: 100vh/* calc(100vh - 1.3em) */;
+    height: 100vh;
     top: 1.3em;
     width: 1.3em;
     flex-direction: column;
@@ -680,7 +675,7 @@ Media queries for responsive layout
 
     header{
         flex-wrap: wrap;/* collapse items */
-        margin-top: .8em;/* space above header */
+        margin-top: .5em;/* space above header */
     }
     header > *{
         width: initial;/* reset widths of header children so they sit nicely */
