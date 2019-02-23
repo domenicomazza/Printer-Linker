@@ -638,8 +638,15 @@ border: 2px solid #9900cc;
 }
 
 /* ===
-Media queries for responsive layout
+Media queries for responsive layout and print
 === */
+
+@media print{
+
+    html,body, header > *, footer > *{
+        background-color: initial;/* reset background colours to avoid printing background colour */
+    }
+}
 
 @media screen and (min-width:1500px){/* bump up sizing on larger displays */
     html,body{
