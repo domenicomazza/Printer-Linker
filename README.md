@@ -4,16 +4,9 @@
 
 Information about Printer Linker can be found at [https://printer.lc/#about](https://printer.lc/#about).
 
-## Versions
-
-- [v3.1](https://printer.lc/) (2019–onwards)
-- [v3](https://printer.lc/v3/?/melbourne/) (2014–2019)
-- [v2](https://printer.lc/v2) (2013)
-- [v1](https://printer.lc/v1) (2013)
-
 ## License
 
-Printer Linker's graphics in `img/` are the copyright of Domenico Mazza 2013. You may create derivative works freely with the software included here, without using the graphics in `img/` and with respect to the licenses of included software and typefaces:
+Printer Linker's graphics in `img/` and the document `Print_Digital_Exegesis.pdf` are the copyright of Domenico Mazza 2013–2014. You may create derivative works freely with the software included here, without using the aforementioned copyrighted content, and with respect to the licenses of included software and typefaces:
 
 - [jQuery](https://jquery.com) and [Tooltipster](http://iamceege.github.io/tooltipster/) are included under an MIT license and belong to their respective authors.
 
