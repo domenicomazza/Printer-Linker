@@ -2,7 +2,7 @@
 
 ## About
 
-Information about Printer Linker can be found at [https://printer.lc/#about](https://printer.lc/#about).
+Information about Printer Linker can be found at [https://domenicomazza.github.io/Printer-Linker/#about](https://domenicomazza.github.io/Printer-Linker/#about).
 
 ## License
 
