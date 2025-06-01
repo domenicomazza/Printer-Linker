@@ -2,7 +2,7 @@
 
 ## About
 
-Information about Printer Linker can be found at [https://printer.lc/#about](https://printer.lc/#about).
+Information about Printer Linker can be found at [https://printerlinker.mazza.studio/#about](https://printerlinker.mazza.studio/#about).
 
 ## License
 
